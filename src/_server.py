@@ -7,6 +7,7 @@ import argparse
 import decimal
 import logging
 import uvicorn
+import json
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
@@ -85,6 +86,9 @@ async def solve(request: Request):  # type: ignore
         },
         "amms": {},
     }
+
+    print("Solution Found with N orders", len(sample_output["orders"]))
+    print("Solution", json.dumps(sample_output))
     return sample_output
 
 

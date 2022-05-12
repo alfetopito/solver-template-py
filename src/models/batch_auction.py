@@ -156,7 +156,8 @@ class BatchAuction:
 
     def solve(self) -> None:
         """Solve Batch"""
-        orders = self.orders
+        # Sell orders
+        orders = [o for o in self.orders if o.is_sell_order is True]
         for i in range(len(orders) - 1):
             for j in range(i + 1, len(orders)):
                 order_i, order_j = orders[i], orders[j]
