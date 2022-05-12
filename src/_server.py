@@ -71,8 +71,10 @@ async def solve(request: Request):  # type: ignore
     # 1. Solve BatchAuction: update batch_auction with
     batch.solve()
 
+    ref_token = '' if batch.prices == {} else list(batch.prices.keys())[0].value
+
     sample_output = {
-        "ref_token": list(batch.prices.keys())[0].value,
+        "ref_token": ref_token,
         "orders": {
             order.order_id: order.as_dict()
             for order in batch.orders
