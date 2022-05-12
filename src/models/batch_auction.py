@@ -167,6 +167,31 @@ class BatchAuction:
                         buy_amount_value=order_i.sell_amount,
                         sell_amount_value=order_j.sell_amount,
                     )
+                elif (
+                        order_i.match_type(order_j) == OrderMatchType.LHS_FILLED
+                        and order_j.allow_partial_fill is True
+                ):
+                    order_i.execute(
+                        buy_amount_value=order_i.buy_amount,
+                        sell_amount_value=order_i.sell_amount,
+                    )
+                    order_j.execute(
+                        buy_amount_value=order_i.sell_amount,
+                        sell_amount_value=order_i.buy_amount,
+                    )
+                elif (
+                        order_i.match_type(order_j) == OrderMatchType.RHS_FILLED
+                        and order_i.allow_partial_fill is True
+                ):
+                    order_j.execute(
+                        buy_amount_value=order_j.buy_amount,
+                        sell_amount_value=order_j.sell_amount,
+                    )
+                    order_i.execute(
+                        buy_amount_value=order_j.sell_amount,
+                        sell_amount_value=order_j.buy_amount,
+                    )
+                if order_i.is_executed() and order_j.is_executed():
                     # For sell Orders:
                     # executedBuyAmount = executedSellAmount.mul(sellPrice).ceilDiv(buyPrice)
                     token_a = self.token_info(order_i.sell_token)
