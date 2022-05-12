@@ -72,7 +72,7 @@ async def solve(request: Request):  # type: ignore
     batch.solve()
 
     sample_output = {
-        "ref_token": batch.ref_token.value,
+        "ref_token": list(batch.prices.keys())[0].value,
         "orders": {
             order.order_id: order.as_dict()
             for order in batch.orders

@@ -29,7 +29,7 @@ class BatchAuction:
         tokens: dict[Token, TokenInfo],
         orders: dict[str, Order],
         uniswaps: dict[str, Uniswap],
-        ref_token: Token,
+        ref_token: Optional[Token],
         prices: Optional[dict] = None,
         name: str = "batch_auction",
         metadata: Optional[dict] = None,
@@ -52,10 +52,11 @@ class BatchAuction:
         self._uniswaps = uniswaps
 
         # Store reference token and (previous) prices.
-        self.ref_token = ref_token
-        self.prices = (
-            prices if prices else {ref_token: self._tokens[ref_token].external_price}
-        )
+        # self.ref_token = ref_token
+        # self.prices = (
+        #     prices if prices else {ref_token: self._tokens[ref_token].external_price}
+        # )
+        self.prices = {}
 
     @classmethod
     def from_dict(cls, data: dict, name: str) -> BatchAuction:
@@ -80,7 +81,8 @@ class BatchAuction:
         metadata = load_metadata(data.get("metadata", {}))
         prices = load_prices(data.get("prices", {}))
 
-        ref_token = select_token_with_highest_normalize_priority(tokens)
+        # ref_token = select_token_with_highest_normalize_priority(tokens)
+        ref_token = None
 
         return cls(
             tokens,
